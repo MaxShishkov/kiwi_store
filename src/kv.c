@@ -30,7 +30,7 @@ kv_t *kv_init(size_t capacity) {
     return table;
 }
 
-size_t hash(char *key) {
+size_t hash(const char *key) {
     size_t hash = SALT;
     int c;
 
@@ -40,12 +40,12 @@ size_t hash(char *key) {
     return hash;
 }
 
-int kv_put(kv_t *table, char *key, char *value) {
-    if (table == NULL || key == NULL || value ==NULL)
-        return KV_ERR_NULL;
+int kv_put(kv_t *table, const char *key, const char *value) {
+    if (table == NULL || key == NULL || value == NULL)
+        return KV_ERROR; //-1
 
     if (table->count == table->capacity)
-        return KV_ERR_CAPACITY;
+        return KV_ERROR_FULL;
 
     size_t index = hash(key) % table->capacity;
 
@@ -57,7 +57,7 @@ int kv_put(kv_t *table, char *key, char *value) {
             char *new_value = strdup(value);
             if (new_value == NULL) {
                 free(new_value);
-                return KV_ERR_MEMORY;
+                return KV_ERROR; // -1
             }
             free(entry->value);
             entry->value = new_value;
@@ -70,7 +70,7 @@ int kv_put(kv_t *table, char *key, char *value) {
             if (new_key == NULL || new_value == NULL) {
                 free(new_key);
                 free(new_value);
-                return KV_ERR_MEMORY;
+                return KV_ERROR; // -1
             }
             entry->key = new_key;
             entry->value = new_value;
@@ -78,5 +78,5 @@ int kv_put(kv_t *table, char *key, char *value) {
             return probe;
         }
     }
-    return KV_ERROR;
+    return KV_ERROR_FULL; // -2
 }

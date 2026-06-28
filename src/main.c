@@ -8,16 +8,19 @@ int main() {
 
     printf("table at: %p\n", table);
     printf("table capacity: %zu\n", table->capacity);
-    int idx = kv_put(table, "hehe", "haha");
-    printf("idx: %d\n", idx);
-    idx = kv_put(table, "beep", "boop");
-    printf("idx: %d\n", idx);
 
-    for (int i = 0; i < CAPACITY; i++) {
-        if (table->entries[i].key) {
-            printf("entry %d: key=%s, value=%s\n", i, table->entries[i].key, table->entries[i].value);
-        }
-    }
+    kv_put(table, "foo", "foo");
+    kv_put(table, "bar", "bar");
+    kv_put(table, "beep", "beep");
+    char *value = kv_get(table, "foo");
+    char *value2 = kv_get(table, "beep");
+    char *value3 = kv_get(table, "not there");
+    printf("value: %s\n", value);
+    printf("value2: %s\n", value2);
+    printf("val3: %s\n", value3);
+    free(value);
+    free(value2);
+    free(value3);
     free(table);
 
     return 0;

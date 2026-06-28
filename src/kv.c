@@ -92,3 +92,21 @@ int kv_put(kv_t *db, char *key, char *value) {
     }
     return KV_ERROR_FULL; // -2
 }
+
+char* kv_get(kv_t *db, char *key) {
+    if (db == NULL || key == NULL)
+        return NULL;
+
+    size_t index = hash(key) %db->capacity;
+    for (size_t i = 0; i < db->capacity; i++){
+        size_t probe = (index + i) %db->capacity;
+        kv_entry_t *entry = &db->entries[probe];
+        if (entry->key
+            && entry->key != (void*)TOMBSTONE
+            && !strcmp(key,entry->key)) {
+                return entry->value;
+            }
+    }
+    return NULL;
+
+}

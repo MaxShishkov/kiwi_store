@@ -13,14 +13,12 @@ int main() {
     kv_put(table, "bar", "bar");
     kv_put(table, "beep", "beep");
     char *value = kv_get(table, "foo");
-    char *value2 = kv_get(table, "beep");
-    char *value3 = kv_get(table, "not there");
+    //char *value2 = kv_get(table, "beep");
+    //char *value3 = kv_get(table, "not there");
     printf("value: %s\n", value);
-    printf("value2: %s\n", value2);
-    printf("val3: %s\n", value3);
-    free(value);
-    free(value2);
-    free(value3);
+    //printf("value2: %s\n", value2);
+    //printf("val3: %s\n", value3);
+
     free(table);
 
     return 0;

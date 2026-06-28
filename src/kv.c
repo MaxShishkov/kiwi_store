@@ -101,6 +101,9 @@ char* kv_get(kv_t *db, char *key) {
     for (size_t i = 0; i < db->capacity; i++){
         size_t probe = (index + i) %db->capacity;
         kv_entry_t *entry = &db->entries[probe];
+
+        if (entry->key == NULL)
+            return NULL;
         if (entry->key
             && entry->key != (void*)TOMBSTONE
             && !strcmp(key,entry->key)) {

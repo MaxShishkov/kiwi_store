@@ -1,6 +1,7 @@
 #include <bits/types/siginfo_t.h>
 #include <stdalign.h>
 #include <kv.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,11 +32,23 @@ kv_t *kv_init(size_t capacity) {
 }
 
 size_t hash(const char *key) {
+    /*
     size_t hash = SALT;
     int c;
 
     while ((c = *key++))
-        hash = ((hash << HASH_SHIFT) + hash) + c; /* hash * 33 + c */
+        hash = ((hash << HASH_SHIFT) + hash) + c;
+
+    return hash;
+    */
+    size_t hash = 0x13371337deadbeef;
+
+    while(*key) {
+        hash ^= *key;
+        hash = hash << 8;
+        hash += *key;
+        key++;
+    }
 
     return hash;
 }

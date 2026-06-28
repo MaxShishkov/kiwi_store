@@ -1,1 +1,2 @@
-# kiwi_store
+# kiwi
+Key-Value storeage with hash functionality.

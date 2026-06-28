@@ -8,7 +8,7 @@
 #define SALT 5381
 #define HASH_SHIFT 5
 #define EMPTY      NULL
-#define TOMBSTONE  ((char *)-1)
+#define TOMBSTONE ((char *)0x1)
 
 kv_t *kv_init(size_t capacity) {
     if (capacity == 0)

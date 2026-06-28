@@ -54,18 +54,18 @@ size_t hash(const char *key) {
     return hash;
 }
 
-int kv_put(kv_t *table, const char *key, const char *value) {
-    if (table == NULL || key == NULL || value == NULL)
+int kv_put(kv_t *db, const char *key, const char *value) {
+    if (db == NULL || key == NULL || value == NULL)
         return KV_ERROR; //-1
 
-    if (table->count == table->capacity)
+    if (db->count == db->capacity)
         return KV_ERROR_FULL; // -2
 
-    size_t index = hash(key) % table->capacity;
+    size_t index = hash(key) % db->capacity;
 
-    for (size_t i = 0; i < table->capacity; i++) {
-        size_t probe = (index + i) % table->capacity;
-        kv_entry_t *entry = &table->entries[probe];
+    for (size_t i = 0; i < db->capacity; i++) {
+        size_t probe = (index + i) % db->capacity;
+        kv_entry_t *entry = &db->entries[probe];
         if (entry->key
             && entry->key != (void*)TOMBSTONE
             && !strcmp(entry->key, key)) {
@@ -89,7 +89,7 @@ int kv_put(kv_t *table, const char *key, const char *value) {
             }
             entry->key = new_key;
             entry->value = new_value;
-            table->count++;
+            db->count++;
             return KV_OK;
         }
     }

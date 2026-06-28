@@ -45,7 +45,7 @@ int kv_put(kv_t *table, const char *key, const char *value) {
         return KV_ERROR; //-1
 
     if (table->count == table->capacity)
-        return KV_ERROR_FULL;
+        return KV_ERROR_FULL; // -2
 
     size_t index = hash(key) % table->capacity;
 
@@ -61,7 +61,7 @@ int kv_put(kv_t *table, const char *key, const char *value) {
             }
             free(entry->value);
             entry->value = new_value;
-            return probe;
+            return KV_OK;
         }
 
         if (!entry->key || entry->key == TOMBSTONE) {
@@ -75,7 +75,7 @@ int kv_put(kv_t *table, const char *key, const char *value) {
             entry->key = new_key;
             entry->value = new_value;
             table->count++;
-            return probe;
+            return KV_OK;
         }
     }
     return KV_ERROR_FULL; // -2

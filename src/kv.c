@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <bits/types/siginfo_t.h>
 #include <stdalign.h>
 #include <kv.h>
@@ -62,7 +63,7 @@ int kv_put(kv_t *table, const char *key, const char *value) {
 
     size_t index = hash(key) % table->capacity;
 
-    for (int i = 0; i < table->capacity; i++) {
+    for (size_t i = 0; i < table->capacity; i++) {
         size_t probe = (index + i) % table->capacity;
         kv_entry_t *entry = &table->entries[probe];
         if (entry->key

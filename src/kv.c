@@ -38,18 +38,6 @@ size_t hash(const char *key) {
         hash = ((hash << HASH_SHIFT) + hash) + c;
 
     return hash;
-    /*
-    size_t hash = 0x13371337deadbeef;
-
-    while(*key) {
-        hash ^= *key;
-        hash = hash << 8;
-        hash += *key;
-        key++;
-    }
-
-    return hash;
-    */
 }
 
 int kv_put(kv_t *db, char *key, char *value) {

@@ -113,3 +113,27 @@ char* kv_get(kv_t *db, char *key) {
     return NULL;
 
 }
+
+int kv_delete(kv_t *db, char *key) {
+    if (db == NULL || key == NULL)
+        return KV_ERROR;
+
+    size_t index = hash(key) %db->capacity;
+    for (size_t i = 0; i < db->capacity; i++){
+        size_t probe = (index + i) %db->capacity;
+        kv_entry_t *entry = &db->entries[probe];
+        if (entry->key == NULL) {
+            return KV_ERROR;
+        }
+        if (entry->key != (void*)TOMBSTONE
+            && !strcmp(key, entry->key)) {
+                free(entry->key);
+                free(entry->value);
+                entry->key = TOMBSTONE;
+                entry->value = NULL;
+                db->count--;
+                return KV_OK;
+        }
+    }
+    return KV_ERROR;
+}

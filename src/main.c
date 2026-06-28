@@ -13,11 +13,12 @@ int main() {
     kv_put(table, "bar", "bar");
     kv_put(table, "beep", "beep");
     char *value = kv_get(table, "foo");
-    //char *value2 = kv_get(table, "beep");
-    //char *value3 = kv_get(table, "not there");
     printf("value: %s\n", value);
-    //printf("value2: %s\n", value2);
-    //printf("val3: %s\n", value3);
+
+    kv_delete(table, value);
+    value = NULL;
+    value = kv_get(table, "foo");
+    printf("value: %s\n", value);
 
     free(table);
 

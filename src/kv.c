@@ -1,6 +1,4 @@
 #define _POSIX_C_SOURCE 200809L
-#include <bits/types/siginfo_t.h>
-#include <stdalign.h>
 #include <kv.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -20,7 +18,7 @@ kv_t *kv_init(size_t capacity) {
     if (table == NULL)
         return NULL;
 
-    table->entries = calloc(capacity, sizeof(kv_t));
+    table->entries = calloc(capacity, sizeof(kv_entry_t));
     if (table->entries == NULL) {
         free(table);
         return NULL;
@@ -54,7 +52,7 @@ size_t hash(const char *key) {
     return hash;
 }
 
-int kv_put(kv_t *db, const char *key, const char *value) {
+int kv_put(kv_t *db, char *key, char *value) {
     if (db == NULL || key == NULL || value == NULL)
         return KV_ERROR; //-1
 
@@ -71,7 +69,6 @@ int kv_put(kv_t *db, const char *key, const char *value) {
             && !strcmp(entry->key, key)) {
             char *new_value = strdup(value);
             if (new_value == NULL) {
-                free(new_value);
                 return KV_ERROR; // -1
             }
             free(entry->value);
@@ -95,3 +92,4 @@ int kv_put(kv_t *db, const char *key, const char *value) {
     }
     return KV_ERROR_FULL; // -2
 }
+

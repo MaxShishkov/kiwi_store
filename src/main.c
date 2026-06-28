@@ -12,6 +12,12 @@ int main() {
     printf("idx: %d\n", idx);
     idx = kv_put(table, "beep", "boop");
     printf("idx: %d\n", idx);
+
+    for (int i = 0; i < CAPACITY; i++) {
+        if (table->entries[i].key) {
+            printf("entry %d: key=%s, value=%s\n", i, table->entries[i].key, table->entries[i].value);
+        }
+    }
     free(table);
 
     return 0;

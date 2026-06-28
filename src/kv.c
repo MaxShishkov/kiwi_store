@@ -65,8 +65,9 @@ int kv_put(kv_t *table, const char *key, const char *value) {
     for (int i = 0; i < table->capacity; i++) {
         size_t probe = (index + i) % table->capacity;
         kv_entry_t *entry = &table->entries[probe];
-        if (entry->key && entry->key != TOMBSTONE &&
-            !strcmp(entry->key, key)) {
+        if (entry->key
+            && entry->key != (void*)TOMBSTONE
+            && !strcmp(entry->key, key)) {
             char *new_value = strdup(value);
             if (new_value == NULL) {
                 free(new_value);
@@ -77,7 +78,7 @@ int kv_put(kv_t *table, const char *key, const char *value) {
             return KV_OK;
         }
 
-        if (!entry->key || entry->key == TOMBSTONE) {
+        if (!entry->key || entry->key == (void*)TOMBSTONE) {
             char *new_key = strdup(key);
             char *new_value = strdup(value);
             if (new_key == NULL || new_value == NULL) {

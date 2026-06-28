@@ -31,7 +31,6 @@ kv_t *kv_init(size_t capacity) {
 }
 
 size_t hash(const char *key) {
-    /*
     size_t hash = SALT;
     int c;
 
@@ -39,7 +38,7 @@ size_t hash(const char *key) {
         hash = ((hash << HASH_SHIFT) + hash) + c;
 
     return hash;
-    */
+    /*
     size_t hash = 0x13371337deadbeef;
 
     while(*key) {
@@ -50,6 +49,7 @@ size_t hash(const char *key) {
     }
 
     return hash;
+    */
 }
 
 int kv_put(kv_t *db, char *key, char *value) {
@@ -92,4 +92,3 @@ int kv_put(kv_t *db, char *key, char *value) {
     }
     return KV_ERROR_FULL; // -2
 }
-

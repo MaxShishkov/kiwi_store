@@ -137,3 +137,24 @@ int kv_delete(kv_t *db, char *key) {
     }
     return KV_ERROR;
 }
+
+int kv_free(kv_t *db) {
+    if (!db)
+        return KV_ERROR;
+
+    for (size_t i = 0; i < db->capacity; i++) {
+        kv_entry_t *entry = &db->entries[i];
+        if (entry->key && entry->key != (void*)TOMBSTONE){
+            free(entry->key);
+            free(entry->value);
+            entry->key = NULL;
+            entry->value = NULL;
+            db->count--;
+        }
+    }
+    free(db->entries);
+    db->entries = NULL;
+    db->count = 0;
+    free(db);
+    return KV_OK;
+}

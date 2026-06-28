@@ -20,7 +20,8 @@ int main() {
     value = kv_get(table, "foo");
     printf("value: %s\n", value);
 
-    free(table);
+    kv_free(table);
+    table = NULL;
 
     return 0;
 }
